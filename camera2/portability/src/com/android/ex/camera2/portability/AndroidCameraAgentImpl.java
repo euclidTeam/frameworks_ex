@@ -171,12 +171,17 @@ class AndroidCameraAgentImpl extends CameraAgent {
             return new AndroidCameraDeviceInfo(cameraInfos, numberOfCameras, firstBack, firstFront);
         }
 
-        @Override
-        public Characteristics getCharacteristics(int cameraId) {
-            Camera.CameraInfo info = mCameraInfos[cameraId];
-            if (info != null) {
-                return new AndroidCharacteristics(info);
+	@Override
+	public Characteristics getCharacteristics(int cameraId) {
+            if (mCameraInfos != null && cameraId >= 0 && cameraId < mCameraInfos.length) {
+                Camera.CameraInfo info = mCameraInfos[cameraId];
+                if (info != null) {
+                    return new AndroidCharacteristics(info);
+                } else {
+                    return null;
+                }
             } else {
+                // Handle invalid cameraId or uninitialized mCameraInfos array
                 return null;
             }
         }
